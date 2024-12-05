@@ -1,13 +1,18 @@
 package com.northcoders.jv_record_shop.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.Instant;
+import java.util.Set;
 
 @Entity
 @Table(name = "album")
 @Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Album {
 
     @Id
@@ -18,11 +23,14 @@ public class Album {
     private String name;
 
     @Column
-    private Instant releasedDate;
+    private String releasedDate;
 
     @Enumerated(EnumType.ORDINAL)
     @Column
-    Genre genre;
+    private Genre genre;
+
+    @OneToMany(mappedBy = "id")
+    private Set<Artists> artists;
 
     @Column
     private Instant createdAt;
