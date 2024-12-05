@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @DataJpaTest
 public class SongRepositoryTest {
@@ -34,6 +35,32 @@ public class SongRepositoryTest {
                 .isNotNull()
                 .hasSameSizeAs(songs);
 
+    }
+
+    @Test
+    public void testGetSongById() {
+        Song song = Song.builder()
+                .title("Fearless")
+                .writer("Taylor Swift")
+                .songLength(Duration.ofSeconds(241))
+                .build();
+
+        songRepository.save(song);
+
+        Optional<Song> result = songRepository.findById(1L);
+
+        Assertions.assertThat(result)
+                .isPresent()
+                .get()
+                .isEqualTo(song);
+
+    }
+
+    @Test
+    public void testGetSongById_invalidId() {
+        Assertions.assertThat(songRepository.findById(12345L))
+                .isNotPresent()
+                .isEmpty();
     }
 
 }
