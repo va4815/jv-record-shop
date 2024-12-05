@@ -24,7 +24,6 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public Album getAlbumById(Long id) {
-        // TODO: implement get album by id
-        return null;
+        return albumRepository.findById(id).orElse(null);
     }
 }

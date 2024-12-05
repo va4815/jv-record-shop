@@ -15,9 +15,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @DataJpaTest
@@ -74,13 +76,15 @@ public class AlbumServiceTest {
                 .build();
 
         Album speakNow = Album.builder()
+                .id(1L)
                 .name("Speak Now")
                 .releasedDate("25-10-2010")
                 .genre(Genre.POP)
                 .artists(Set.of(taylorSwift))
                 .build();
 
-        when(mockAlbumRepository.save(Mockito.any(Album.class))).thenReturn(speakNow);
+
+        when(mockAlbumRepository.findById(1L)).thenReturn(Optional.ofNullable(speakNow));
 
         Album result = albumServiceImpl.getAlbumById(1L);
 
