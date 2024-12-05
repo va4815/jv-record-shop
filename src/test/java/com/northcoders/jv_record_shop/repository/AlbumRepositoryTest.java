@@ -63,4 +63,11 @@ public class AlbumRepositoryTest {
                 .isEqualTo(album);
     }
 
+    @Test
+    public void testGetAlbumById_invalidId() {
+        Assertions.assertThat(albumRepository.findById(12345L))
+                .isNotPresent()
+                .isEmpty();
+    }
+
 }
