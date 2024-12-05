@@ -31,10 +31,6 @@ public class Album {
     @Column
     private Genre genre;
 
-//    @OneToMany(mappedBy = "id")
-//    private Set<Artists> artists;
-
-
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -44,6 +40,16 @@ public class Album {
             joinColumns = { @JoinColumn(name = "album_id") },
             inverseJoinColumns = { @JoinColumn(name = "artist_id") })
     private Set<Artists> artists = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "album_song",
+            joinColumns = { @JoinColumn(name = "album_id") },
+            inverseJoinColumns = { @JoinColumn(name = "song_id") })
+    private Set<Song> songs = new HashSet<>();
 
     @Column
     private Instant createdAt;
