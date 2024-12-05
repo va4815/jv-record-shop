@@ -4,11 +4,15 @@ import com.northcoders.jv_record_shop.model.Album;
 import com.northcoders.jv_record_shop.model.Genre;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
+import static org.mockito.Mockito.when;
 
 @DataJpaTest
 public class AlbumRepositoryTest {
@@ -39,6 +43,24 @@ public class AlbumRepositoryTest {
                 .isNotNull()
                 .hasSameSizeAs(albums);
 
+    }
+
+    @Test
+    public void testGetAlbumById() {
+        Album album = Album.builder()
+                .name("Speak Now")
+                .releasedDate("25-10-2010")
+                .genre(Genre.POP)
+                .build();
+
+        albumRepository.save(album);
+
+        Optional<Album> result = albumRepository.findById(1L);
+
+        Assertions.assertThat(result)
+                .isPresent()
+                .get()
+                .isEqualTo(album);
     }
 
 }
