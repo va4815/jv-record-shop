@@ -21,4 +21,10 @@ public class AlbumServiceImpl implements AlbumService {
         albumRepository.findAll().forEach(albums::add);
         return albums;
     }
+
+    @Override
+    public Album getAlbumById(Long id) {
+        // TODO: implement get album by id
+        return null;
+    }
 }

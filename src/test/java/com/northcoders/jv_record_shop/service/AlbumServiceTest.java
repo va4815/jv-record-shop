@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class AlbumServiceTest {
     private AlbumServiceImpl albumServiceImpl;
 
     @Test
-    @DisplayName("/GET get all albums")
+    @DisplayName("get all albums")
     void testGetAllAlbums() {
 
         Artists taylorSwift = Artists.builder()
@@ -61,6 +62,29 @@ public class AlbumServiceTest {
 
         assertThat(actualResult).hasSize(2);
         assertThat(actualResult).isEqualTo(albumList);
+
+    }
+
+    @Test
+    @DisplayName("get album by id")
+    void testGetAlbumById() {
+        Artists taylorSwift = Artists.builder()
+                .name("Taylor Swift")
+                .gender(Gender.F)
+                .build();
+
+        Album speakNow = Album.builder()
+                .name("Speak Now")
+                .releasedDate("25-10-2010")
+                .genre(Genre.POP)
+                .artists(Set.of(taylorSwift))
+                .build();
+
+        when(mockAlbumRepository.save(Mockito.any(Album.class))).thenReturn(speakNow);
+
+        Album result = albumServiceImpl.getAlbumById(1L);
+
+        assertThat(result).isEqualTo(speakNow);
 
     }
 
