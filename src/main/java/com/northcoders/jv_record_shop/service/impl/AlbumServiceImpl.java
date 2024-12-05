@@ -1,5 +1,6 @@
 package com.northcoders.jv_record_shop.service.impl;
 
+import com.northcoders.jv_record_shop.dto.request.CreateAlbumRequestDTO;
 import com.northcoders.jv_record_shop.model.Album;
 import com.northcoders.jv_record_shop.repository.AlbumRepository;
 import com.northcoders.jv_record_shop.service.AlbumService;
@@ -25,5 +26,11 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public Album getAlbumById(Long id) {
         return albumRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Album createAlbum(CreateAlbumRequestDTO requestDTO) {
+        // TODO: create Album
+        return null;
     }
 }
