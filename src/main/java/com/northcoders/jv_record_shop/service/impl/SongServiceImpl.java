@@ -47,7 +47,6 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public List<Song> getSongsByTitle(Set<String> titles) {
-        // TODO: get songs by titles
-        return List.of();
+        return songRepository.findAllByTitleIn(titles);
     }
 }
