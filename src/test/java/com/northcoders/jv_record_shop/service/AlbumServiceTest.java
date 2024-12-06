@@ -1,23 +1,22 @@
 package com.northcoders.jv_record_shop.service;
 
 import com.northcoders.jv_record_shop.dto.request.CreateAlbumRequestDTO;
-import com.northcoders.jv_record_shop.model.Album;
-import com.northcoders.jv_record_shop.model.Artists;
-import com.northcoders.jv_record_shop.model.Gender;
-import com.northcoders.jv_record_shop.model.Genre;
+import com.northcoders.jv_record_shop.dto.request.CreateSongRequestDTO;
+import com.northcoders.jv_record_shop.model.*;
 import com.northcoders.jv_record_shop.repository.AlbumRepository;
 import com.northcoders.jv_record_shop.service.impl.AlbumServiceImpl;
+import com.northcoders.jv_record_shop.service.impl.ArtistsServiceImpl;
+import com.northcoders.jv_record_shop.service.impl.SongServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.time.Duration;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -31,6 +30,12 @@ public class AlbumServiceTest {
 
     @InjectMocks
     private AlbumServiceImpl albumServiceImpl;
+
+    @Mock
+    private ArtistsServiceImpl artistsServiceImpl;
+
+    @Mock
+    private SongServiceImpl songServiceImpl;
 
     @Test
     @DisplayName("get all albums")
@@ -96,6 +101,19 @@ public class AlbumServiceTest {
     @Test
     @DisplayName("add album with valid data")
     void testAddAlbumWithValidData() {
+        Set<Song> songs = Set.of(
+                Song.builder()
+                        .title("Fearless")
+                        .writer("Taylor Swift")
+                        .songLength(Duration.ofSeconds(241))
+                        .build(),
+                Song.builder()
+                        .title("Fifteen")
+                        .writer("Taylor Swift")
+                        .songLength(Duration.ofSeconds(294))
+                        .build()
+        );
+
         Artists taylorSwift = Artists.builder()
                 .id(1L)
                 .name("Taylor Swift")
@@ -108,14 +126,28 @@ public class AlbumServiceTest {
                 .releasedDate("25-10-2010")
                 .genre(Genre.POP)
                 .artists(Set.of(taylorSwift))
+                .songs(songs)
                 .build();
 
+
+        Set<CreateSongRequestDTO> createSongDTOs = Set.of(
+                CreateSongRequestDTO.builder()
+                        .title("Fearless")
+                        .writer("Taylor Swift")
+                        .songLength(Duration.ofSeconds(241))
+                        .build(),
+                CreateSongRequestDTO.builder()
+                        .title("Fifteen")
+                        .writer("Taylor Swift")
+                        .songLength(Duration.ofSeconds(241))
+                        .build()
+        );
 
         CreateAlbumRequestDTO requestDTO = CreateAlbumRequestDTO.builder()
                 .name("Speak Now")
                 .releasedDate("25-10-2010")
                 .genre(Genre.POP)
-                .artistIds(Set.of(1L))
+                .songs(createSongDTOs)
                 .build();
 
         when(mockAlbumRepository.save(Mockito.any(Album.class))).thenReturn(album);

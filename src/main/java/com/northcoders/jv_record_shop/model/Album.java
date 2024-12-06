@@ -1,5 +1,6 @@
 package com.northcoders.jv_record_shop.model;
 
+import com.northcoders.jv_record_shop.dto.request.CreateAlbumRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -56,5 +57,13 @@ public class Album {
 
     @Column
     private Instant modifiedAt;
+
+    public Album(CreateAlbumRequestDTO requestDTO) {
+        if (requestDTO != null && songs != null) {
+            this.name = requestDTO.getName();
+            this.releasedDate = requestDTO.getReleasedDate();
+            this.genre = requestDTO.getGenre();
+        }
+    }
 
 }
