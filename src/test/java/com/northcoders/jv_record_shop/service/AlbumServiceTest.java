@@ -2,6 +2,7 @@ package com.northcoders.jv_record_shop.service;
 
 import com.northcoders.jv_record_shop.dto.request.CreateAlbumRequestDTO;
 import com.northcoders.jv_record_shop.dto.request.CreateSongRequestDTO;
+import com.northcoders.jv_record_shop.dto.request.UpdateAlbumRequestDTO;
 import com.northcoders.jv_record_shop.model.*;
 import com.northcoders.jv_record_shop.repository.AlbumRepository;
 import com.northcoders.jv_record_shop.service.impl.AlbumServiceImpl;
@@ -153,6 +154,32 @@ public class AlbumServiceTest {
         when(mockAlbumRepository.save(Mockito.any(Album.class))).thenReturn(album);
 
         Album result = albumServiceImpl.createAlbum(requestDTO);
+
+        assertThat(result).isEqualTo(album);
+
+    }
+
+    @Test
+    @DisplayName("update album with valid data")
+    void testUpdateAlbumWithValidData() {
+        Album album = Album.builder()
+                .name("Speak Now")
+                .releasedDate("25-10-2010")
+                .genre(Genre.POP)
+                .build();
+
+        UpdateAlbumRequestDTO requestDTO = UpdateAlbumRequestDTO.builder()
+                .id(1L)
+                .name("Speak Now")
+                .releasedDate("25-10-2010")
+                .genre(Genre.POP)
+                .build();
+
+        when(mockAlbumRepository.save(Mockito.any(Album.class))).thenReturn(album);
+        when(mockAlbumRepository.findById(1L)).thenReturn(Optional.ofNullable(album));
+        album.setId(1L);
+
+        Album result = albumServiceImpl.updateAlbum(requestDTO);
 
         assertThat(result).isEqualTo(album);
 
