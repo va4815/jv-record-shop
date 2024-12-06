@@ -7,6 +7,7 @@ import com.northcoders.jv_record_shop.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Song addSong(CreateSongRequestDTO requestDTO) {
-        // TODO: add song into db
-        return null;
+        Song song = new Song(requestDTO);
+        return songRepository.save(song);
     }
 }

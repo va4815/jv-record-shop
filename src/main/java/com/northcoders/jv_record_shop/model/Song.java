@@ -1,6 +1,7 @@
 package com.northcoders.jv_record_shop.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.northcoders.jv_record_shop.dto.request.CreateSongRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,4 +41,11 @@ public class Song {
     @JsonIgnore
     private Set<Album> albums = new HashSet<>();
 
+    public Song(CreateSongRequestDTO requestDTO) {
+        if (requestDTO != null) {
+            this.title = requestDTO.getTitle();
+            this.writer = requestDTO.getWriter();
+            this.songLength = requestDTO.getSongLength();
+        }
+    }
 }
