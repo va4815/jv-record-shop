@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -61,6 +62,29 @@ public class ArtistsServiceTest {
         Artists result = artistsServiceImpl.getArtistById(1L);
 
         assertThat(result).isEqualTo(artist);
+
+    }
+
+    @Test
+    @DisplayName("get artist by ids")
+    void testGetArtistByIds() {
+        List<Artists> artists = Arrays.asList(
+                Artists.builder()
+                        .name("Taylor Swift")
+                        .gender(Gender.F)
+                        .build(),
+                Artists.builder()
+                        .name("Yoshiki")
+                        .gender(Gender.M)
+                        .build()
+        );
+
+        when(mockArtistsRepository.findAllArtistsByIdIn(Set.of(1L, 2L))).thenReturn(artists);
+
+        List<Artists> actualResult = artistsServiceImpl.getArtistByIds(Set.of(1L, 2L));
+
+        assertThat(actualResult).hasSize(2);
+        assertThat(actualResult).isEqualTo(artists);
 
     }
 
