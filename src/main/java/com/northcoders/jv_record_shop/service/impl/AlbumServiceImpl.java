@@ -3,6 +3,7 @@ package com.northcoders.jv_record_shop.service.impl;
 import com.northcoders.jv_record_shop.dto.request.CreateAlbumRequestDTO;
 import com.northcoders.jv_record_shop.dto.request.CreateSongRequestDTO;
 import com.northcoders.jv_record_shop.dto.request.UpdateAlbumRequestDTO;
+import com.northcoders.jv_record_shop.exception.AlbumNotFoundException;
 import com.northcoders.jv_record_shop.exception.ArtistsNotFoundException;
 import com.northcoders.jv_record_shop.model.Album;
 import com.northcoders.jv_record_shop.model.Artists;
@@ -123,6 +124,10 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public Album updateAlbum(UpdateAlbumRequestDTO requestDTO) {
         Album savedAlbum = getAlbumById(requestDTO.getId());
+
+        if (savedAlbum == null) {
+            throw new AlbumNotFoundException(requestDTO.getId().toString());
+        }
 
         savedAlbum.setName(requestDTO.getName());
         savedAlbum.setReleasedDate(requestDTO.getReleasedDate());
