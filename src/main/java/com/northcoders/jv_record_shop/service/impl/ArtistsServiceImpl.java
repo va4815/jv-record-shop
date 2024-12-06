@@ -19,4 +19,10 @@ public class ArtistsServiceImpl implements ArtistsService {
         // TODO: get all artists
         return List.of();
     }
+
+    @Override
+    public Artists getArtistById(Long id) {
+        // TODO: get artist by id
+        return null;
+    }
 }
