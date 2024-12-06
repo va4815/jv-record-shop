@@ -91,6 +91,31 @@ public class AlbumControllerTest {
     }
 
     @Test
+    @DisplayName("GET /albums/{id}")
+    void getAlbumsById() throws Exception {
+        Long albumId = 1L;
+
+        Album album = Album.builder()
+                .id(albumId)
+                .name("Speak Now")
+                .releasedDate("25-10-2010")
+                .genre(Genre.POP)
+                .build();
+
+
+        when(this.mockAlbumServiceImpl.getAlbumById(albumId)).thenReturn(album);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.get("/api/v1/albums/{id}", albumId)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(albumId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Speak Now"))
+        ;
+
+    }
+
+    @Test
     @DisplayName("POST /albums")
     void createAlbums() throws Exception {
         Album album = Album.builder()
