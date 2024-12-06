@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -26,6 +27,12 @@ public class ArtistsServiceImpl implements ArtistsService {
     @Override
     public Artists getArtistById(Long id) {
         return artistsRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Artists> getArtistByIds(Collection<Long> ids) {
+        // TODO: get artists by ids
+        return List.of();
     }
 
     @Override
