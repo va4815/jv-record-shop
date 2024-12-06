@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class SongServiceImpl implements SongService {
@@ -42,5 +43,11 @@ public class SongServiceImpl implements SongService {
                 .toList();
 
         songRepository.saveAll(songRequestDTOs);
+    }
+
+    @Override
+    public List<Song> getSongsByTitle(Set<String> titles) {
+        // TODO: get songs by titles
+        return List.of();
     }
 }
