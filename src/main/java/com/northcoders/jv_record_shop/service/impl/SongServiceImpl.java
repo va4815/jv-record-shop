@@ -36,8 +36,11 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public List<Song> addManySongs(List<CreateSongRequestDTO> requestDTOS) {
-        // TODO: add many songs
-        return List.of();
+    public void addManySongs(List<CreateSongRequestDTO> requestDTOS) {
+        List<Song> songRequestDTOs = requestDTOS.stream()
+                .map(Song::new)
+                .toList();
+
+        songRepository.saveAll(songRequestDTOs);
     }
 }
