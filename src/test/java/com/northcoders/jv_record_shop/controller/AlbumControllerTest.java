@@ -1,6 +1,7 @@
 package com.northcoders.jv_record_shop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.northcoders.jv_record_shop.dto.request.CreateAlbumRequestDTO;
 import com.northcoders.jv_record_shop.model.Album;
 import com.northcoders.jv_record_shop.model.Artists;
 import com.northcoders.jv_record_shop.model.Gender;
@@ -11,9 +12,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -80,6 +83,34 @@ public class AlbumControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Speak Now"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Fearless"))
+        ;
+
+    }
+
+    @Test
+    @DisplayName("POST /albums")
+    void createAlbums() throws Exception {
+        Album album = Album.builder()
+                .name("Speak Now")
+                .releasedDate("25-10-2010")
+                .genre(Genre.POP)
+                .build();
+
+        when(this.mockAlbumServiceImpl.createAlbum(Mockito.any(CreateAlbumRequestDTO.class))).thenReturn(album);
+
+        CreateAlbumRequestDTO requestDTO = CreateAlbumRequestDTO.builder()
+                .name("Speak Now")
+                .releasedDate("25-10-2010")
+                .genre(Genre.POP)
+                .build();
+
+        String requestBody = mapper.writeValueAsString(requestDTO);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.post("/api/v1/albums").content(requestBody)
+                                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Speak Now"))
         ;
 
     }

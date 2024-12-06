@@ -1,8 +1,6 @@
 package com.northcoders.jv_record_shop.service;
 
 import com.northcoders.jv_record_shop.dto.request.CreateSongRequestDTO;
-import com.northcoders.jv_record_shop.model.Album;
-import com.northcoders.jv_record_shop.model.Genre;
 import com.northcoders.jv_record_shop.model.Song;
 import com.northcoders.jv_record_shop.repository.SongRepository;
 import com.northcoders.jv_record_shop.service.impl.SongServiceImpl;
@@ -36,6 +34,11 @@ public class SongServiceTest {
                         .title("Fearless")
                         .writer("Taylor Swift")
                         .songLength(Duration.ofSeconds(241))
+                        .build(),
+                Song.builder()
+                        .title("Fifteen")
+                        .writer("Taylor Swift")
+                        .songLength(Duration.ofSeconds(294))
                         .build()
         );
 
@@ -43,7 +46,7 @@ public class SongServiceTest {
 
         List<Song> actualResult = songServiceImpl.getAllSongs();
 
-        assertThat(actualResult).hasSize(1);
+        assertThat(actualResult).hasSize(2);
         assertThat(actualResult).isEqualTo(songs);
 
     }
