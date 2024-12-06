@@ -7,6 +7,7 @@ import com.northcoders.jv_record_shop.service.ArtistsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,8 +18,9 @@ public class ArtistsServiceImpl implements ArtistsService {
 
     @Override
     public List<Artists> getAllArtists() {
-        // TODO: get all artists
-        return List.of();
+        List<Artists> artists = new ArrayList<>();
+        artistsRepository.findAll().forEach(artists::add);
+        return artists;
     }
 
     @Override
