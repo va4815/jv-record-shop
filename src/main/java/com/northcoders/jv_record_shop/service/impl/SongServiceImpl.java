@@ -34,4 +34,10 @@ public class SongServiceImpl implements SongService {
         Song song = new Song(requestDTO);
         return songRepository.save(song);
     }
+
+    @Override
+    public List<Song> addManySongs(List<CreateSongRequestDTO> requestDTOS) {
+        // TODO: add many songs
+        return List.of();
+    }
 }

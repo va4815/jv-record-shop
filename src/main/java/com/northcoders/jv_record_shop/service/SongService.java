@@ -9,4 +9,5 @@ public interface SongService {
     List<Song> getAllSongs();
     Song getSongById(Long id);
     Song addSong(CreateSongRequestDTO requestDTO);
+    List<Song> addManySongs(List<CreateSongRequestDTO> requestDTOS);
 }
