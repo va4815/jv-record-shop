@@ -1,5 +1,6 @@
 package com.northcoders.jv_record_shop.service;
 
+import com.northcoders.jv_record_shop.dto.request.CreateAlbumRequestDTO;
 import com.northcoders.jv_record_shop.model.Album;
 import com.northcoders.jv_record_shop.model.Artists;
 import com.northcoders.jv_record_shop.model.Gender;
@@ -89,6 +90,39 @@ public class AlbumServiceTest {
         Album result = albumServiceImpl.getAlbumById(1L);
 
         assertThat(result).isEqualTo(speakNow);
+
+    }
+
+    @Test
+    @DisplayName("add album with valid data")
+    void testAddAlbumWithValidData() {
+        Artists taylorSwift = Artists.builder()
+                .id(1L)
+                .name("Taylor Swift")
+                .gender(Gender.F)
+                .build();
+
+        Album album = Album.builder()
+                .id(1L)
+                .name("Speak Now")
+                .releasedDate("25-10-2010")
+                .genre(Genre.POP)
+                .artists(Set.of(taylorSwift))
+                .build();
+
+
+        CreateAlbumRequestDTO requestDTO = CreateAlbumRequestDTO.builder()
+                .name("Speak Now")
+                .releasedDate("25-10-2010")
+                .genre(Genre.POP)
+                .artistIds(Set.of(1L))
+                .build();
+
+        when(mockAlbumRepository.save(Mockito.any(Album.class))).thenReturn(album);
+
+        Album result = albumServiceImpl.createAlbum(requestDTO);
+
+        assertThat(result).isEqualTo(album);
 
     }
 
