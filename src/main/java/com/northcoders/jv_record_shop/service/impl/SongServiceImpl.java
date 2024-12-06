@@ -6,6 +6,7 @@ import com.northcoders.jv_record_shop.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,7 +17,8 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public List<Song> getAllSongs() {
-        // TODO: get all songs
-        return List.of();
+        List<Song> songs = new ArrayList<>();
+        songRepository.findAll().forEach(songs::add);
+        return songs;
     }
 }
