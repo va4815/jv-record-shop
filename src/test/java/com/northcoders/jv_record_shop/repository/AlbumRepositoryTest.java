@@ -70,4 +70,22 @@ public class AlbumRepositoryTest {
                 .isEmpty();
     }
 
+    @Test
+    public void testSaveAlbumWithValidData() {
+        Album album = Album.builder()
+                .name("Speak Now")
+                .releasedDate("25-10-2010")
+                .genre(Genre.POP)
+                .build();
+
+        Album result = albumRepository.save(album);
+
+        Assertions.assertThat(result)
+                .isNotNull()
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(album);
+
+    }
+
 }
