@@ -66,6 +66,31 @@ public class SongServiceTest {
     }
 
     @Test
+    @DisplayName("get song by titles")
+    void testGetSongByTitles() {
+        List<Song> songs = Arrays.asList(
+                Song.builder()
+                        .title("Fearless")
+                        .writer("Taylor Swift")
+                        .songLength(Duration.ofSeconds(241))
+                        .build(),
+                Song.builder()
+                        .title("Fifteen")
+                        .writer("Taylor Swift")
+                        .songLength(Duration.ofSeconds(294))
+                        .build()
+        );
+
+        when(mockSongRepository.findAllByTitleIn(Set.of("Fearless", "Fifteen"))).thenReturn(songs);
+
+        List<Song> actualResult = songServiceImpl.getSongsByTitle(Set.of("Fearless", "Fifteen"));
+
+        assertThat(actualResult).hasSize(2);
+        assertThat(actualResult).isEqualTo(songs);
+
+    }
+
+    @Test
     @DisplayName("add song with valid data")
     void testAddSongWithValidData() {
         Song song = Song.builder()
