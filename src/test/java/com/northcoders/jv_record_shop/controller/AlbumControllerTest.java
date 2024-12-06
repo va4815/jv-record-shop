@@ -146,4 +146,19 @@ public class AlbumControllerTest {
 
     }
 
+    @Test
+    @DisplayName("DELETE /albums")
+    void deleteAlbumsById() throws Exception {
+        boolean result = true;
+
+        when(this.mockAlbumServiceImpl.deleteAlbumById(1L)).thenReturn(result);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.delete("/api/v1/albums/{id}", 1L)
+                                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isAccepted())
+        ;
+
+    }
+
 }
