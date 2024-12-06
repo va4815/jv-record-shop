@@ -8,9 +8,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    private ResponseEntity<Object> buildResponseEntity(ServerError error) {
+        return new ResponseEntity<>(error, error.getStatus());
+    }
+
     @ExceptionHandler
     public ResponseEntity<Object> handleAlbumNotFoundException(AlbumNotFoundException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        ServerError serverError = new ServerError("Album NOT found", HttpStatus.NOT_FOUND, e);
+        return buildResponseEntity(serverError);
     }
 
 }
