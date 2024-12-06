@@ -31,8 +31,7 @@ public class ArtistsServiceImpl implements ArtistsService {
 
     @Override
     public List<Artists> getArtistByIds(Collection<Long> ids) {
-        // TODO: get artists by ids
-        return List.of();
+        return artistsRepository.findAllArtistsByIdIn(ids);
     }
 
     @Override
