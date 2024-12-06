@@ -13,7 +13,7 @@ public class CreateAlbumRequestDTO {
     private String name;
     private String releasedDate;
     private Genre genre;
-    private Set<Long> artistIds = new HashSet<>();
-    private Set<CreateSongRequestDTO> songs = new HashSet<>();
+    private Set<Long> artistIds;
+    private Set<CreateSongRequestDTO> songs;
 
 }
