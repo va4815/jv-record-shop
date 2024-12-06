@@ -30,7 +30,7 @@ public class ArtistsServiceImpl implements ArtistsService {
 
     @Override
     public Artists createArtist(CreateArtistsRequestDTO requestDTO) {
-        // TODO: create artist
-        return null;
+        Artists artist = new Artists(requestDTO);
+        return artistsRepository.save(artist);
     }
 }
