@@ -1,5 +1,6 @@
 package com.northcoders.jv_record_shop.service.impl;
 
+import com.northcoders.jv_record_shop.dto.request.CreateArtistsRequestDTO;
 import com.northcoders.jv_record_shop.model.Artists;
 import com.northcoders.jv_record_shop.repository.ArtistsRepository;
 import com.northcoders.jv_record_shop.service.ArtistsService;
@@ -23,6 +24,12 @@ public class ArtistsServiceImpl implements ArtistsService {
     @Override
     public Artists getArtistById(Long id) {
         // TODO: get artist by id
+        return null;
+    }
+
+    @Override
+    public Artists createArtist(CreateArtistsRequestDTO requestDTO) {
+        // TODO: create artist
         return null;
     }
 }
