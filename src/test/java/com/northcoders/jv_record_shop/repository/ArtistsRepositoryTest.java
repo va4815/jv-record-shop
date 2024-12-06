@@ -52,4 +52,11 @@ public class ArtistsRepositoryTest {
                 .isEqualTo(artist);
     }
 
+    @Test
+    public void testGetArtistById_invalidId() {
+        Assertions.assertThat(artistsRepository.findById(12345L))
+                .isNotPresent()
+                .isEmpty();
+    }
+
 }
