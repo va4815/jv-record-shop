@@ -89,7 +89,10 @@ public class AlbumServiceImpl implements AlbumService {
 
             List<Song> songs = songService.getSongsByTitle(songTitles);
 
-            album.getSongs().addAll(new HashSet<>(songs));
+            if (songs != null) {
+                album.getSongs().addAll(new HashSet<>(songs));
+            }
+
         }
 
         // save album
