@@ -59,4 +59,20 @@ public class ArtistsRepositoryTest {
                 .isEmpty();
     }
 
+    @Test
+    public void testSaveArtistWithValidData() {
+        Artists artist = Artists.builder()
+                .name("Taylor Swift")
+                .gender(Gender.F)
+                .build();
+
+        Artists result = artistsRepository.save(artist);
+
+        Assertions.assertThat(result)
+                .isNotNull()
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(artist);
+    }
+
 }
