@@ -90,4 +90,22 @@ public class AlbumRepositoryTest {
 
     }
 
+    @Test
+    public void testDeleteAlbumById() {
+        Album album = Album.builder()
+                .name("Speak Now")
+                .releasedDate("25-10-2010")
+                .genre(Genre.POP)
+                .build();
+
+        albumRepository.save(album);
+        albumRepository.deleteById(1L);
+
+        Optional<Album> result = albumRepository.findById(1L);
+
+        Assertions.assertThat(result)
+                .isNotPresent();
+
+    }
+
 }
