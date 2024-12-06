@@ -1,14 +1,13 @@
 package com.northcoders.jv_record_shop.controller;
 
+import com.northcoders.jv_record_shop.dto.request.CreateArtistsRequestDTO;
 import com.northcoders.jv_record_shop.dto.response.ArtistsResponseDTO;
 import com.northcoders.jv_record_shop.model.Artists;
 import com.northcoders.jv_record_shop.service.ArtistsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,6 +23,12 @@ public class ArtistsController {
         List<Artists> artists = artistsService.getAllArtists();
         List<ArtistsResponseDTO> artistsDTOList = artists.stream().map(ArtistsResponseDTO::new).toList();
         return new ResponseEntity<>(artistsDTOList, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<ArtistsResponseDTO> createArtists(@RequestBody CreateArtistsRequestDTO requestDTO) {
+        Artists artists = artistsService.createArtist(requestDTO);
+        return new ResponseEntity<>(new ArtistsResponseDTO(artists), HttpStatus.CREATED);
     }
 
 }

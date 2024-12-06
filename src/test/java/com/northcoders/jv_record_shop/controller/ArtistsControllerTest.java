@@ -1,6 +1,7 @@
 package com.northcoders.jv_record_shop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.northcoders.jv_record_shop.dto.request.CreateArtistsRequestDTO;
 import com.northcoders.jv_record_shop.model.Artists;
 import com.northcoders.jv_record_shop.model.Gender;
 import com.northcoders.jv_record_shop.service.impl.ArtistsServiceImpl;
@@ -9,9 +10,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -64,6 +67,32 @@ public class ArtistsControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Taylor Swift"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Yoshiki"))
+        ;
+
+    }
+
+    @Test
+    @DisplayName("POST /artists")
+    void createArtists() throws Exception {
+        Artists artists = Artists.builder()
+                .name("Taylor Swift")
+                .gender(Gender.F)
+                .build();
+
+        when(this.mockArtistsServiceImpl.createArtist(Mockito.any(CreateArtistsRequestDTO.class))).thenReturn(artists);
+
+        CreateArtistsRequestDTO requestDTO = CreateArtistsRequestDTO.builder()
+                .name("Taylor Swift")
+                .gender(Gender.F)
+                .build();
+
+        String requestBody = mapper.writeValueAsString(requestDTO);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.post("/api/v1/artists").content(requestBody)
+                                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Taylor Swift"))
         ;
 
     }
