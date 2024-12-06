@@ -185,4 +185,21 @@ public class AlbumServiceTest {
 
     }
 
+    @Test
+    @DisplayName("delete album by id")
+    void testDeleteAlbumById() {
+        Album speakNow = Album.builder()
+                .id(1L)
+                .name("Speak Now")
+                .releasedDate("25-10-2010")
+                .genre(Genre.POP)
+                .build();
+
+        when(mockAlbumRepository.findById(1L)).thenReturn(Optional.ofNullable(speakNow));
+
+        boolean result = albumServiceImpl.deleteAlbumById(1L);
+
+        assertThat(result).isEqualTo(true);
+    }
+
 }
