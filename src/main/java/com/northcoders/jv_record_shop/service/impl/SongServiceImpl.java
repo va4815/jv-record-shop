@@ -1,5 +1,6 @@
 package com.northcoders.jv_record_shop.service.impl;
 
+import com.northcoders.jv_record_shop.dto.request.CreateSongRequestDTO;
 import com.northcoders.jv_record_shop.model.Song;
 import com.northcoders.jv_record_shop.repository.SongRepository;
 import com.northcoders.jv_record_shop.service.SongService;
@@ -25,5 +26,11 @@ public class SongServiceImpl implements SongService {
     @Override
     public Song getSongById(Long id) {
         return songRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Song addSong(CreateSongRequestDTO requestDTO) {
+        // TODO: add song into db
+        return null;
     }
 }
