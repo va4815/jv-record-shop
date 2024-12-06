@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @DataJpaTest
 public class ArtistsRepositoryTest {
@@ -50,6 +51,29 @@ public class ArtistsRepositoryTest {
                 .isPresent()
                 .get()
                 .isEqualTo(artist);
+    }
+
+    @Test
+    public void testGetArtistByIds() {
+        List<Artists> artists = Arrays.asList(
+                Artists.builder()
+                        .name("Taylor Swift")
+                        .gender(Gender.F)
+                        .build(),
+                Artists.builder()
+                        .name("Yoshiki")
+                        .gender(Gender.M)
+                        .build()
+        );
+
+        artistsRepository.saveAll(artists);
+
+        List<Artists> results = artistsRepository.findAllArtistsByIdIn(Set.of(1L, 2L));
+
+        Assertions.assertThat(results)
+                .isNotNull()
+                .hasSameSizeAs(artists);
+
     }
 
     @Test
