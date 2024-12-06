@@ -35,7 +35,7 @@ public class AlbumController {
     @PutMapping
     public ResponseEntity<AlbumResponseDTO> updateAlbums(@RequestBody UpdateAlbumRequestDTO requestDTO) {
         Album album = albumService.updateAlbum(requestDTO);
-        return new ResponseEntity<>(new AlbumResponseDTO(album), HttpStatus.CREATED);
+        return new ResponseEntity<>(new AlbumResponseDTO(album), HttpStatus.OK);
     }
 
 }

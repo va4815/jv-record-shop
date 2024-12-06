@@ -2,6 +2,7 @@ package com.northcoders.jv_record_shop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.northcoders.jv_record_shop.dto.request.CreateAlbumRequestDTO;
+import com.northcoders.jv_record_shop.dto.request.UpdateAlbumRequestDTO;
 import com.northcoders.jv_record_shop.model.Album;
 import com.northcoders.jv_record_shop.model.Artists;
 import com.northcoders.jv_record_shop.model.Gender;
@@ -112,6 +113,34 @@ public class AlbumControllerTest {
                         MockMvcRequestBuilders.post("/api/v1/albums").content(requestBody)
                                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Speak Now"))
+        ;
+
+    }
+
+    @Test
+    @DisplayName("PUT /albums")
+    void updateAlbums() throws Exception {
+        Album album = Album.builder()
+                .name("Speak Now")
+                .releasedDate("25-10-2010")
+                .genre(Genre.POP)
+                .build();
+
+        when(this.mockAlbumServiceImpl.updateAlbum(Mockito.any(UpdateAlbumRequestDTO.class))).thenReturn(album);
+
+        UpdateAlbumRequestDTO requestDTO = UpdateAlbumRequestDTO.builder()
+                .name("Speak Now")
+                .releasedDate("25-10-2010")
+                .genre(Genre.POP)
+                .build();
+
+        String requestBody = mapper.writeValueAsString(requestDTO);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.put("/api/v1/albums").content(requestBody)
+                                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Speak Now"))
         ;
 
