@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @DataJpaTest
 public class ArtistsRepositoryTest {
@@ -32,6 +33,23 @@ public class ArtistsRepositoryTest {
         Assertions.assertThat(results)
                 .isNotNull()
                 .hasSameSizeAs(artists);
+    }
+
+    @Test
+    public void testGetArtistById() {
+        Artists artist = Artists.builder()
+                .name("Taylor Swift")
+                .gender(Gender.F)
+                .build();
+
+        artistsRepository.save(artist);
+
+        Optional<Artists> result = artistsRepository.findById(1L);
+
+        Assertions.assertThat(result)
+                .isPresent()
+                .get()
+                .isEqualTo(artist);
     }
 
 }
