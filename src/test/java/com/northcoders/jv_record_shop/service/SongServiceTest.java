@@ -1,6 +1,8 @@
 package com.northcoders.jv_record_shop.service;
 
 import com.northcoders.jv_record_shop.dto.request.CreateSongRequestDTO;
+import com.northcoders.jv_record_shop.model.Album;
+import com.northcoders.jv_record_shop.model.Genre;
 import com.northcoders.jv_record_shop.model.Song;
 import com.northcoders.jv_record_shop.repository.SongRepository;
 import com.northcoders.jv_record_shop.service.impl.SongServiceImpl;
@@ -15,6 +17,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -85,6 +88,44 @@ public class SongServiceTest {
         Song result = songServiceImpl.addSong(requestDTO);
 
         assertThat(result).isEqualTo(song);
+
+    }
+
+    @Test
+    @DisplayName("add many songs with valid data")
+    void testAddManySongsWithValidData() {
+        List<Song> songs = Arrays.asList(
+                Song.builder()
+                        .title("Fearless")
+                        .writer("Taylor Swift")
+                        .songLength(Duration.ofSeconds(241))
+                        .build(),
+                Song.builder()
+                        .title("Fifteen")
+                        .writer("Taylor Swift")
+                        .songLength(Duration.ofSeconds(294))
+                        .build()
+        );
+
+        List<CreateSongRequestDTO> requestDTOS = Arrays.asList(
+                CreateSongRequestDTO.builder()
+                        .title("Fearless")
+                        .writer("Taylor Swift")
+                        .songLength(Duration.ofSeconds(241))
+                        .build(),
+                CreateSongRequestDTO.builder()
+                        .title("Fearless")
+                        .writer("Taylor Swift")
+                        .songLength(Duration.ofSeconds(241))
+                        .build()
+        );
+        
+        when(mockSongRepository.saveAll(songs)).thenReturn(songs);
+
+        List<Song> actualResult = songServiceImpl.addManySongs(requestDTOS);
+
+        assertThat(actualResult).hasSize(2);
+        assertThat(actualResult).isEqualTo(songs);
 
     }
 
