@@ -25,8 +25,7 @@ public class ArtistsServiceImpl implements ArtistsService {
 
     @Override
     public Artists getArtistById(Long id) {
-        // TODO: get artist by id
-        return null;
+        return artistsRepository.findById(id).orElse(null);
     }
 
     @Override
