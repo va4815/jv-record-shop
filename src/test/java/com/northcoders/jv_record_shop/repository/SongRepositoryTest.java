@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @DataJpaTest
 public class SongRepositoryTest {
@@ -53,6 +54,31 @@ public class SongRepositoryTest {
                 .isPresent()
                 .get()
                 .isEqualTo(song);
+
+    }
+
+    @Test
+    public void testGetSongByTitles() {
+        List<Song> songs = Arrays.asList(
+                Song.builder()
+                        .title("Fearless")
+                        .writer("Taylor Swift")
+                        .songLength(Duration.ofSeconds(241))
+                        .build(),
+                Song.builder()
+                        .title("Fifteen")
+                        .writer("Taylor Swift")
+                        .songLength(Duration.ofSeconds(294))
+                        .build()
+        );
+
+        songRepository.saveAll(songs);
+
+        List<Song> results = songRepository.findAllByTitleIn(Set.of("Fearless", "Fifteen"));
+
+        Assertions.assertThat(results)
+                .isNotNull()
+                .hasSameSizeAs(songs);
 
     }
 
