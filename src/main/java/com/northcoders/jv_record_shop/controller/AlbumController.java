@@ -1,6 +1,7 @@
 package com.northcoders.jv_record_shop.controller;
 
 import com.northcoders.jv_record_shop.dto.request.CreateAlbumRequestDTO;
+import com.northcoders.jv_record_shop.dto.request.UpdateAlbumRequestDTO;
 import com.northcoders.jv_record_shop.dto.response.AlbumResponseDTO;
 import com.northcoders.jv_record_shop.model.Album;
 import com.northcoders.jv_record_shop.service.AlbumService;
@@ -28,6 +29,12 @@ public class AlbumController {
     @PostMapping
     public ResponseEntity<AlbumResponseDTO> createAlbums(@RequestBody CreateAlbumRequestDTO requestDTO) {
         Album album = albumService.createAlbum(requestDTO);
+        return new ResponseEntity<>(new AlbumResponseDTO(album), HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    public ResponseEntity<AlbumResponseDTO> updateAlbums(@RequestBody UpdateAlbumRequestDTO requestDTO) {
+        Album album = albumService.updateAlbum(requestDTO);
         return new ResponseEntity<>(new AlbumResponseDTO(album), HttpStatus.CREATED);
     }
 
