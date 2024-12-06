@@ -136,4 +136,14 @@ public class AlbumServiceImpl implements AlbumService {
 
         return albumRepository.save(savedAlbum);
     }
+
+    @Override
+    public boolean deleteAlbumById(Long id) {
+        Album album = getAlbumById(id);
+        if (album != null) {
+            albumRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }

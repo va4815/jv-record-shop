@@ -11,4 +11,5 @@ public interface AlbumService {
     Album getAlbumById(Long id);
     Album createAlbum(CreateAlbumRequestDTO requestDTO);
     Album updateAlbum(UpdateAlbumRequestDTO requestDTO);
+    boolean deleteAlbumById(Long id);
 }
