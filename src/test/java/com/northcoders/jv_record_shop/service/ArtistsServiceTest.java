@@ -45,4 +45,20 @@ public class ArtistsServiceTest {
 
     }
 
+    @Test
+    @DisplayName("get artist by id")
+    void testGetArtistById() {
+        Artists artist = Artists.builder()
+                .name("Taylor Swift")
+                .gender(Gender.F)
+                .build();
+
+        when(mockArtistsRepository.findById(1L)).thenReturn(Optional.ofNullable(artist));
+
+        Artists result = artistsServiceImpl.getArtistById(1L);
+
+        assertThat(result).isEqualTo(artist);
+
+    }
+
 }
