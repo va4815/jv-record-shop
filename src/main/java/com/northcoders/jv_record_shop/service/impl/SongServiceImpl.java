@@ -24,7 +24,6 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Song getSongById(Long id) {
-        // TODO: get song by id
-        return null;
+        return songRepository.findById(id).orElse(null);
     }
 }
