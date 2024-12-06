@@ -63,4 +63,22 @@ public class SongRepositoryTest {
                 .isEmpty();
     }
 
+    @Test
+    public void testSaveSongWithValidData() {
+        Song song = Song.builder()
+                .title("Fearless")
+                .writer("Taylor Swift")
+                .songLength(Duration.ofSeconds(241))
+                .build();
+
+        Song result = songRepository.save(song);
+
+        Assertions.assertThat(result)
+                .isNotNull()
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(song);
+
+    }
+
 }
