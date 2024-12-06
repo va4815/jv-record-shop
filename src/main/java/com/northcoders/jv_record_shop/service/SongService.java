@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface SongService {
     List<Song> getAllSongs();
+    Song getSongById(Long id);
 }

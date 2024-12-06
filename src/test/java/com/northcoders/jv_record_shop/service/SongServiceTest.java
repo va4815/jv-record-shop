@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -42,6 +43,23 @@ public class SongServiceTest {
 
         assertThat(actualResult).hasSize(1);
         assertThat(actualResult).isEqualTo(songs);
+
+    }
+
+    @Test
+    @DisplayName("get song by id")
+    void testGetSongById() {
+        Song song = Song.builder()
+                .title("Fearless")
+                .writer("Taylor Swift")
+                .songLength(Duration.ofSeconds(241))
+                .build();
+
+        when(mockSongRepository.findById(1L)).thenReturn(Optional.ofNullable(song));
+
+        Song result = songServiceImpl.getSongById(1L);
+
+        assertThat(result).isEqualTo(song);
 
     }
 

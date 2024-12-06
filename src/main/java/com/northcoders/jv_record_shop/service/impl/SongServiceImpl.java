@@ -21,4 +21,10 @@ public class SongServiceImpl implements SongService {
         songRepository.findAll().forEach(songs::add);
         return songs;
     }
+
+    @Override
+    public Song getSongById(Long id) {
+        // TODO: get song by id
+        return null;
+    }
 }
