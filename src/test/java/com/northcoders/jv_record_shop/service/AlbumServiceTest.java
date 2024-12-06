@@ -50,14 +50,14 @@ public class AlbumServiceTest {
                 .name("Speak Now")
                 .releasedDate("25-10-2010")
                 .genre(Genre.POP)
-                .artists(Set.of(taylorSwift))
+                .artists(List.of(taylorSwift))
                 .build();
 
         Album album2 = Album.builder()
                 .name("Fearless")
                 .releasedDate("11-11-2008")
                 .genre(Genre.POP)
-                .artists(Set.of(taylorSwift))
+                .artists(List.of(taylorSwift))
                 .build();
 
         List<Album> albumList = new ArrayList<>();
@@ -86,7 +86,7 @@ public class AlbumServiceTest {
                 .name("Speak Now")
                 .releasedDate("25-10-2010")
                 .genre(Genre.POP)
-                .artists(Set.of(taylorSwift))
+                .artists(List.of(taylorSwift))
                 .build();
 
 
@@ -101,7 +101,7 @@ public class AlbumServiceTest {
     @Test
     @DisplayName("add album with valid data")
     void testAddAlbumWithValidData() {
-        Set<Song> songs = Set.of(
+        List<Song> songs = List.of(
                 Song.builder()
                         .title("Fearless")
                         .writer("Taylor Swift")
@@ -125,7 +125,7 @@ public class AlbumServiceTest {
                 .name("Speak Now")
                 .releasedDate("25-10-2010")
                 .genre(Genre.POP)
-                .artists(Set.of(taylorSwift))
+                .artists(List.of(taylorSwift))
                 .songs(songs)
                 .build();
 

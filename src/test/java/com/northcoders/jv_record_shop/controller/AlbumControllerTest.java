@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -62,14 +63,15 @@ public class AlbumControllerTest {
                 .name("Speak Now")
                 .releasedDate("25-10-2010")
                 .genre(Genre.POP)
-                .artists(Set.of(taylorSwift))
+                .artists(List.of(taylorSwift))
                 .build();
 
         Album album2 = Album.builder()
                 .name("Fearless")
                 .releasedDate("11-11-2008")
                 .genre(Genre.POP)
-                .artists(Set.of(taylorSwift))
+                .artists(List.of(taylorSwift))
+                .songs(new ArrayList<>())
                 .build();
 
         List<Album> albumList = new ArrayList<>();

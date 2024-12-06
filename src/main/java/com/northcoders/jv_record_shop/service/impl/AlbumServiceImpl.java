@@ -59,44 +59,63 @@ public class AlbumServiceImpl implements AlbumService {
 
         // get artists by ids, throw exception if NOT found
         Set<Long> artistIds = requestDTO.getArtistIds();
+        Set<String> songTitles = requestDTO.getSongs().stream()
+                .map(CreateSongRequestDTO::getTitle)
+                .collect(Collectors.toSet());
 
         if (artistIds != null) {
             List<Artists> artists = artistsService.getArtistByIds(artistIds);
 
             Set<Long> diffArtistIds = new HashSet<>(artistIds);
-            diffArtistIds.removeAll(
-                    artists.stream()
-                            .map(Artists::getId)
-                            .collect(Collectors.toSet())
-            );
+            Set<Long> savedArtistsIds = artists.stream()
+                    .map(Artists::getId)
+                    .collect(Collectors.toSet());
+            diffArtistIds.removeAll(savedArtistsIds);
+
             if (!diffArtistIds.isEmpty()) {
                 throw new ArtistsNotFoundException(diffArtistIds.toString());
             }
+
+            album.setArtists(artists);
         }
-
-
 
         // create song records
         Set<CreateSongRequestDTO> songSet = requestDTO.getSongs();
         if (songSet != null) {
-            List<CreateSongRequestDTO> songDTOs = new ArrayList<>(requestDTO.getSongs());
-            songService.addManySongs(songDTOs);
 
-            // associate with song records
-            Set<String> songTitles = songDTOs.stream()
-                    .map(CreateSongRequestDTO::getTitle)
+            List<Song> storedSongs = songService.getSongsByTitle(songTitles);
+
+            Set<String> storedSongTitles = storedSongs.stream()
+                    .map(Song::getTitle)
                     .collect(Collectors.toSet());
 
-            List<Song> songs = songService.getSongsByTitle(songTitles);
+            Set<String> songTitlesClone = new HashSet<>(songTitles);
 
-            if (songs != null) {
-                album.getSongs().addAll(new HashSet<>(songs));
+            songTitlesClone.removeAll(storedSongTitles);
+
+            album.getSongs().addAll(storedSongs);
+
+            if (!songTitlesClone.isEmpty()) {
+                // song not stored in db
+                List<CreateSongRequestDTO> songDTOs = new ArrayList<>();
+
+                for (CreateSongRequestDTO songRequestDTO : requestDTO.getSongs()) {
+                    for (String songTitle : songTitlesClone) {
+                        if (songRequestDTO.getTitle().equals(songTitle)) {
+                            songDTOs.add(songRequestDTO);
+                            break;
+                        }
+                    }
+                }
+
+                List<Song> newSavedSongs = songService.addManySongs(songDTOs);
+                album.setSongs(newSavedSongs);
             }
 
         }
 
         // save album
-
-        return albumRepository.save(album);
+        album = albumRepository.save(album);
+        return album;
     }
 }

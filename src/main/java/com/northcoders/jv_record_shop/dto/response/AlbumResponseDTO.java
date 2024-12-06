@@ -28,8 +28,10 @@ public class AlbumResponseDTO {
             this.releasedDate = album.getReleasedDate();
             this.genre = album.getGenre();
 
-            Set<Song> songSet = album.getSongs();
-            songSet.forEach(s -> this.songs.add(new SongResponseDTO(s)));
+            List<Song> songSet = album.getSongs();
+            if (songSet != null && !songSet.isEmpty()) {
+                songSet.forEach(s -> this.songs.add(new SongResponseDTO(s)));
+            }
         }
     }
 }

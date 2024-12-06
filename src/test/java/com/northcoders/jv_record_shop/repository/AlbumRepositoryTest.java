@@ -51,6 +51,8 @@ public class AlbumRepositoryTest {
                 .name("Speak Now")
                 .releasedDate("25-10-2010")
                 .genre(Genre.POP)
+                .songs(List.of())
+                .artists(List.of())
                 .build();
 
         albumRepository.save(album);

@@ -10,6 +10,6 @@ public interface SongService {
     List<Song> getAllSongs();
     Song getSongById(Long id);
     Song addSong(CreateSongRequestDTO requestDTO);
-    void addManySongs(List<CreateSongRequestDTO> requestDTOS);
+    List<Song> addManySongs(List<CreateSongRequestDTO> requestDTOS);
     List<Song> getSongsByTitle(Set<String> titles);
 }
