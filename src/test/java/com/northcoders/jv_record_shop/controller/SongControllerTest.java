@@ -1,6 +1,8 @@
 package com.northcoders.jv_record_shop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.northcoders.jv_record_shop.dto.request.UpdateSongRequestDTO;
 import com.northcoders.jv_record_shop.model.Song;
 import com.northcoders.jv_record_shop.service.impl.SongServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -91,6 +94,37 @@ public class SongControllerTest {
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(songId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Fearless"))
+        ;
+
+    }
+
+    @Test
+    @DisplayName("PUT /song")
+    void updateSong() throws Exception {
+        mapper.registerModule(new JavaTimeModule());
+
+        Song song = Song.builder()
+                .title("Fearless")
+                .writer("Taylor Swift")
+                .songLength(Duration.ofSeconds(241))
+                .build();
+
+        when(this.mockSongServiceImpl.updateSong(Mockito.any(UpdateSongRequestDTO.class))).thenReturn(song);
+
+        UpdateSongRequestDTO requestDTO = UpdateSongRequestDTO.builder()
+                .id(1L)
+                .title("Fearless")
+                .writer("Taylor Swift")
+                .songLength(Duration.ofSeconds(241))
+                .build();
+
+        String requestBody = mapper.writeValueAsString(requestDTO);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.put("/api/v1/song").content(requestBody)
+                                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Fearless"))
         ;
 
