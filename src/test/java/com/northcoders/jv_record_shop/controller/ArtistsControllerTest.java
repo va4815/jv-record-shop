@@ -72,6 +72,29 @@ public class ArtistsControllerTest {
     }
 
     @Test
+    @DisplayName("GET /artists/{id}")
+    void getArtistsById() throws Exception {
+        Long artistId = 1L;
+
+        Artists artists = Artists.builder()
+                .id(artistId)
+                .name("Taylor Swift")
+                .gender(Gender.F)
+                .build();
+
+        when(this.mockArtistsServiceImpl.getArtistById(artistId)).thenReturn(artists);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.get("/api/v1/artists/{id}", artistId)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(artistId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Taylor Swift"))
+        ;
+
+    }
+
+    @Test
     @DisplayName("POST /artists")
     void createArtists() throws Exception {
         Artists artists = Artists.builder()
