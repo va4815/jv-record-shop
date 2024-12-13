@@ -3,6 +3,7 @@ package com.northcoders.jv_record_shop.service;
 import com.northcoders.jv_record_shop.dto.request.CreateAlbumRequestDTO;
 import com.northcoders.jv_record_shop.dto.request.UpdateAlbumRequestDTO;
 import com.northcoders.jv_record_shop.model.Album;
+import com.northcoders.jv_record_shop.model.Artists;
 import com.northcoders.jv_record_shop.model.Song;
 
 import java.util.List;
@@ -14,4 +15,5 @@ public interface AlbumService {
     Album updateAlbum(UpdateAlbumRequestDTO requestDTO);
     boolean deleteAlbumById(Long id);
     List<Album> findAllBySongs(Song song);
+    List<Album> findAllByArtists(Artists artists);
 }

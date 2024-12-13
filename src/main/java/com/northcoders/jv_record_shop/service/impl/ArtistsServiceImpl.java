@@ -3,10 +3,14 @@ package com.northcoders.jv_record_shop.service.impl;
 import com.northcoders.jv_record_shop.dto.request.CreateArtistsRequestDTO;
 import com.northcoders.jv_record_shop.dto.request.UpdateArtistsRequestDTO;
 import com.northcoders.jv_record_shop.exception.ArtistNotFoundException;
+import com.northcoders.jv_record_shop.exception.ArtistsInUseException;
+import com.northcoders.jv_record_shop.model.Album;
 import com.northcoders.jv_record_shop.model.Artists;
 import com.northcoders.jv_record_shop.repository.ArtistsRepository;
+import com.northcoders.jv_record_shop.service.AlbumService;
 import com.northcoders.jv_record_shop.service.ArtistsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +22,10 @@ public class ArtistsServiceImpl implements ArtistsService {
 
     @Autowired
     private ArtistsRepository artistsRepository;
+
+    @Autowired
+    @Lazy
+    private AlbumService albumService;
 
     @Override
     public List<Artists> getAllArtists() {
@@ -60,6 +68,12 @@ public class ArtistsServiceImpl implements ArtistsService {
     public boolean deleteArtistById(Long id) {
         Artists artist = getArtistById(id);
         if (artist != null) {
+            List<Album> albums = albumService.findAllByArtists(artist);
+
+            if (albums != null && !albums.isEmpty()) {
+                throw new ArtistsInUseException(String.valueOf(id));
+            }
+
             artistsRepository.deleteById(id);
             return true;
         }

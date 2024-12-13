@@ -151,4 +151,9 @@ public class AlbumServiceImpl implements AlbumService {
     public List<Album> findAllBySongs(Song song) {
         return albumRepository.findAllBySongs(song);
     }
+
+    @Override
+    public List<Album> findAllByArtists(Artists artists) {
+        return albumRepository.findAllByArtists(artists);
+    }
 }
