@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @DataJpaTest
@@ -55,14 +57,18 @@ public class AlbumRepositoryTest {
                 .artists(List.of())
                 .build();
 
-        albumRepository.save(album);
+        album = albumRepository.save(album);
 
-        Optional<Album> result = albumRepository.findById(1L);
 
-        Assertions.assertThat(result)
-                .isPresent()
-                .get()
-                .isEqualTo(album);
+        Optional<Album> foundAlbumOpt = albumRepository.findById(album.getId());
+
+        assertTrue(foundAlbumOpt.isPresent(), "The album should be present");
+
+        Album foundAlbum = foundAlbumOpt.get();
+        assertEquals("Speak Now", foundAlbum.getName());
+        assertEquals("25-10-2010", foundAlbum.getReleasedDate());
+        assertEquals(Genre.POP, foundAlbum.getGenre());
+        
     }
 
     @Test
