@@ -4,7 +4,7 @@ import com.northcoders.jv_record_shop.dto.request.CreateAlbumRequestDTO;
 import com.northcoders.jv_record_shop.dto.request.CreateSongRequestDTO;
 import com.northcoders.jv_record_shop.dto.request.UpdateAlbumRequestDTO;
 import com.northcoders.jv_record_shop.exception.AlbumNotFoundException;
-import com.northcoders.jv_record_shop.exception.ArtistsNotFoundException;
+import com.northcoders.jv_record_shop.exception.ArtistNotFoundException;
 import com.northcoders.jv_record_shop.model.Album;
 import com.northcoders.jv_record_shop.model.Artists;
 import com.northcoders.jv_record_shop.model.Song;
@@ -75,7 +75,7 @@ public class AlbumServiceImpl implements AlbumService {
             diffArtistIds.removeAll(savedArtistsIds);
 
             if (!diffArtistIds.isEmpty()) {
-                throw new ArtistsNotFoundException(diffArtistIds.toString());
+                throw new ArtistNotFoundException(diffArtistIds.toString());
             }
 
             album.setArtists(artists);
@@ -145,5 +145,15 @@ public class AlbumServiceImpl implements AlbumService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<Album> findAllBySongs(Song song) {
+        return albumRepository.findAllBySongs(song);
+    }
+
+    @Override
+    public List<Album> findAllByArtists(Artists artists) {
+        return albumRepository.findAllByArtists(artists);
     }
 }
