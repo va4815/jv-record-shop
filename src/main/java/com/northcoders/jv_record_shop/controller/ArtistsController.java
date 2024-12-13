@@ -25,6 +25,15 @@ public class ArtistsController {
         return new ResponseEntity<>(artistsDTOList, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ArtistsResponseDTO> getArtistsById(@PathVariable(name = "id") Long id) {
+        Artists artists = artistsService.getArtistById(id);
+        if (artists == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(new ArtistsResponseDTO(artists), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<ArtistsResponseDTO> createArtists(@RequestBody CreateArtistsRequestDTO requestDTO) {
         Artists artists = artistsService.createArtist(requestDTO);
