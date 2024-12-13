@@ -55,4 +55,14 @@ public class ArtistsServiceImpl implements ArtistsService {
 
         return artistsRepository.save(artist);
     }
+
+    @Override
+    public boolean deleteArtistById(Long id) {
+        Artists artist = getArtistById(id);
+        if (artist != null) {
+            artistsRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }

@@ -13,4 +13,5 @@ public interface ArtistsService {
     List<Artists> getArtistByIds(Collection<Long> ids);
     Artists createArtist(CreateArtistsRequestDTO requestDTO);
     Artists updateArtist(UpdateArtistsRequestDTO requestDTO);
+    boolean deleteArtistById(Long id);
 }

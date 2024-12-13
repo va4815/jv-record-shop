@@ -47,4 +47,13 @@ public class ArtistsController {
         return new ResponseEntity<>(new ArtistsResponseDTO(artists), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteArtistById(@PathVariable(name = "id") Long id) {
+        boolean result = artistsService.deleteArtistById(id);
+        if (!result) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
 }
