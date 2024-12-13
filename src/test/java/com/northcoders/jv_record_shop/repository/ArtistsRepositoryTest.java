@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @DataJpaTest
 public class ArtistsRepositoryTest {
 
@@ -55,24 +58,25 @@ public class ArtistsRepositoryTest {
 
     @Test
     public void testGetArtistByIds() {
-        List<Artists> artists = Arrays.asList(
-                Artists.builder()
-                        .name("Taylor Swift")
-                        .gender(Gender.F)
-                        .build(),
-                Artists.builder()
-                        .name("Yoshiki")
-                        .gender(Gender.M)
-                        .build()
-        );
+        Artists artists1 = Artists.builder()
+                .name("Taylor Swift")
+                .gender(Gender.F)
+                .build();
+        Artists artists2 = Artists.builder()
+                .name("Yoshiki")
+                .gender(Gender.M)
+                .build();
 
-        artistsRepository.saveAll(artists);
 
-        List<Artists> results = artistsRepository.findAllArtistsByIdIn(Set.of(1L, 2L));
+        artists1 = artistsRepository.save(artists1);
+        artists2 = artistsRepository.save(artists2);
 
-        Assertions.assertThat(results)
-                .isNotNull()
-                .hasSameSizeAs(artists);
+        List<Artists> results = artistsRepository.findAllArtistsByIdIn(Set.of(artists1.getId(), artists2.getId()));
+
+        assertNotNull(results);
+        assertEquals(results.size(), 2);
+        assertTrue(results.contains(artists1));
+        assertTrue(results.contains(artists2));
 
     }
 
