@@ -49,3 +49,7 @@ API documentation is available through Swagger UI at http://localhost:8080/swagg
 * GET /song/{id} - Retrieves details of a specific song by ID.
 * PUT /song - Updates an existing song by ID.
 * DELETE /song/{id} - Delete a song by ID.
+
+#### health
+
+* GET /check - return status of OK
