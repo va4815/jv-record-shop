@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -68,6 +69,30 @@ public class SongControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].title").value("Fifteen"))
         ;
 
+
+    }
+
+    @Test
+    @DisplayName("GET /song/{id}")
+    void getSongById() throws Exception {
+        Long songId = 1L;
+
+        Song song = Song.builder()
+                .id(songId)
+                .title("Fearless")
+                .writer("Taylor Swift")
+                .songLength(Duration.ofSeconds(241))
+                .build();
+
+        when(this.mockSongServiceImpl.getSongById(songId)).thenReturn(song);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.get("/api/v1/song/{id}", songId)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(songId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Fearless"))
+        ;
 
     }
 
