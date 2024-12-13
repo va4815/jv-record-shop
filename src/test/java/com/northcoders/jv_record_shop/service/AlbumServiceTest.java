@@ -128,6 +128,33 @@ public class AlbumServiceTest {
     }
 
     @Test
+    @DisplayName("get album by artists")
+    void testGetAlbumByArtists() {
+        Artists artists = Artists.builder()
+                .id(1L)
+                .name("Taylor Swift")
+                .gender(Gender.F)
+                .build();
+
+        List<Album> albumList = List.of(
+                Album.builder()
+                        .id(1L)
+                        .name("Speak Now")
+                        .releasedDate("25-10-2010")
+                        .genre(Genre.POP)
+                        .build()
+        );
+
+        when(mockAlbumRepository.findAllByArtists(artists)).thenReturn(albumList);
+
+        List<Album> actualResult = albumServiceImpl.findAllByArtists(artists);
+
+        assertThat(actualResult).hasSize(1);
+        assertThat(actualResult).isEqualTo(albumList);
+
+    }
+
+    @Test
     @DisplayName("add album with valid data")
     void testAddAlbumWithValidData() {
         List<Song> songs = List.of(
