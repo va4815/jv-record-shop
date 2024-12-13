@@ -68,7 +68,7 @@ public class AlbumRepositoryTest {
         assertEquals("Speak Now", foundAlbum.getName());
         assertEquals("25-10-2010", foundAlbum.getReleasedDate());
         assertEquals(Genre.POP, foundAlbum.getGenre());
-        
+
     }
 
     @Test
