@@ -1,6 +1,8 @@
 package com.northcoders.jv_record_shop.service.impl;
 
 import com.northcoders.jv_record_shop.dto.request.CreateArtistsRequestDTO;
+import com.northcoders.jv_record_shop.dto.request.UpdateArtistsRequestDTO;
+import com.northcoders.jv_record_shop.exception.ArtistNotFoundException;
 import com.northcoders.jv_record_shop.model.Artists;
 import com.northcoders.jv_record_shop.repository.ArtistsRepository;
 import com.northcoders.jv_record_shop.service.ArtistsService;
@@ -37,6 +39,20 @@ public class ArtistsServiceImpl implements ArtistsService {
     @Override
     public Artists createArtist(CreateArtistsRequestDTO requestDTO) {
         Artists artist = new Artists(requestDTO);
+        return artistsRepository.save(artist);
+    }
+
+    @Override
+    public Artists updateArtist(UpdateArtistsRequestDTO requestDTO) {
+        Artists artist = getArtistById(requestDTO.getId());
+
+        if (artist == null) {
+            throw new ArtistNotFoundException(requestDTO.getId().toString());
+        }
+
+        artist.setName(requestDTO.getName());
+        artist.setGender(requestDTO.getGender());
+
         return artistsRepository.save(artist);
     }
 }

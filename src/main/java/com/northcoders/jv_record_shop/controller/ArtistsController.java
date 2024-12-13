@@ -1,6 +1,7 @@
 package com.northcoders.jv_record_shop.controller;
 
 import com.northcoders.jv_record_shop.dto.request.CreateArtistsRequestDTO;
+import com.northcoders.jv_record_shop.dto.request.UpdateArtistsRequestDTO;
 import com.northcoders.jv_record_shop.dto.response.ArtistsResponseDTO;
 import com.northcoders.jv_record_shop.model.Artists;
 import com.northcoders.jv_record_shop.service.ArtistsService;
@@ -38,6 +39,12 @@ public class ArtistsController {
     public ResponseEntity<ArtistsResponseDTO> createArtists(@RequestBody CreateArtistsRequestDTO requestDTO) {
         Artists artists = artistsService.createArtist(requestDTO);
         return new ResponseEntity<>(new ArtistsResponseDTO(artists), HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    public ResponseEntity<ArtistsResponseDTO> updateArtists(@RequestBody UpdateArtistsRequestDTO requestDTO) {
+        Artists artists = artistsService.updateArtist(requestDTO);
+        return new ResponseEntity<>(new ArtistsResponseDTO(artists), HttpStatus.OK);
     }
 
 }
