@@ -1,6 +1,8 @@
 package com.northcoders.jv_record_shop.service.impl;
 
 import com.northcoders.jv_record_shop.dto.request.CreateSongRequestDTO;
+import com.northcoders.jv_record_shop.dto.request.UpdateSongRequestDTO;
+import com.northcoders.jv_record_shop.exception.SongNotFoundException;
 import com.northcoders.jv_record_shop.model.Song;
 import com.northcoders.jv_record_shop.repository.SongRepository;
 import com.northcoders.jv_record_shop.service.SongService;
@@ -32,6 +34,21 @@ public class SongServiceImpl implements SongService {
     @Override
     public Song addSong(CreateSongRequestDTO requestDTO) {
         Song song = new Song(requestDTO);
+        return songRepository.save(song);
+    }
+
+    @Override
+    public Song updateSong(UpdateSongRequestDTO requestDTO) {
+        Song song = getSongById(requestDTO.getId());
+
+        if (song == null) {
+            throw new SongNotFoundException(requestDTO.getId().toString());
+        }
+
+        song.setTitle(requestDTO.getTitle());
+        song.setWriter(requestDTO.getWriter());
+        song.setSongLength(requestDTO.getSongLength());
+
         return songRepository.save(song);
     }
 
