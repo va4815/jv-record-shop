@@ -130,4 +130,18 @@ public class SongControllerTest {
 
     }
 
+    @Test
+    @DisplayName("DELETE /song")
+    void deleteSongById() throws Exception {
+        boolean result = true;
+
+        when(this.mockSongServiceImpl.deleteSongById(1L)).thenReturn(result);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.delete("/api/v1/song/{id}", 1L)
+                                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isAccepted())
+        ;
+    }
+
 }
