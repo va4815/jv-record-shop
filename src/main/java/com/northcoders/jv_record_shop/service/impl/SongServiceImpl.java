@@ -2,11 +2,15 @@ package com.northcoders.jv_record_shop.service.impl;
 
 import com.northcoders.jv_record_shop.dto.request.CreateSongRequestDTO;
 import com.northcoders.jv_record_shop.dto.request.UpdateSongRequestDTO;
+import com.northcoders.jv_record_shop.exception.SongInUseException;
 import com.northcoders.jv_record_shop.exception.SongNotFoundException;
+import com.northcoders.jv_record_shop.model.Album;
 import com.northcoders.jv_record_shop.model.Song;
 import com.northcoders.jv_record_shop.repository.SongRepository;
+import com.northcoders.jv_record_shop.service.AlbumService;
 import com.northcoders.jv_record_shop.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +22,10 @@ public class SongServiceImpl implements SongService {
 
     @Autowired
     private SongRepository songRepository;
+
+    @Autowired
+    @Lazy
+    private AlbumService albumService;
 
     @Override
     public List<Song> getAllSongs() {
@@ -75,6 +83,12 @@ public class SongServiceImpl implements SongService {
     public boolean deleteSongById(Long id) {
         Song song = getSongById(id);
         if (song != null) {
+            List<Album> albums = albumService.findAllBySongs(song);
+
+            if (albums != null && !albums.isEmpty()) {
+                throw new SongInUseException(String.valueOf(id));
+            }
+
             songRepository.deleteById(id);
             return true;
         }
