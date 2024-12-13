@@ -4,18 +4,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private ResponseEntity<Object> buildResponseEntity(ServerError error) {
+    private ResponseEntity<Object> buildResponseEntity(ResponseErrorObject error) {
         return new ResponseEntity<>(error, error.getStatus());
     }
 
     @ExceptionHandler
     public ResponseEntity<Object> handleAlbumNotFoundException(AlbumNotFoundException e) {
-        ServerError serverError = new ServerError("Album NOT found", HttpStatus.NOT_FOUND, e);
-        return buildResponseEntity(serverError);
+        ResponseErrorObject errorObject = new ResponseErrorObject("Album NOT found", HttpStatus.NOT_FOUND, e);
+        return buildResponseEntity(errorObject);
     }
 
 }

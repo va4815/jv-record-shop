@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
-public class ServerError {
+public class ResponseErrorObject {
     private String title;
     private String detail;
     private HttpStatus status;
@@ -13,12 +13,12 @@ public class ServerError {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
 
-    private ServerError() {
+    private ResponseErrorObject() {
         timestamp = LocalDateTime.now();
     }
 
 
-    ServerError(String title, HttpStatus status, Throwable ex) {
+    ResponseErrorObject(String title, HttpStatus status, Throwable ex) {
         this();
         this.title = title;
         this.status = status;
