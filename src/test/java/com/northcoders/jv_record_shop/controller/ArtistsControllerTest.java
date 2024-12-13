@@ -147,5 +147,20 @@ public class ArtistsControllerTest {
 
     }
 
+    @Test
+    @DisplayName("DELETE /artists")
+    void deleteArtistsById() throws Exception {
+        boolean result = true;
+
+        when(this.mockArtistsServiceImpl.deleteArtistById(1L)).thenReturn(result);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.delete("/api/v1/artists/{id}", 1L)
+                                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isAccepted())
+        ;
+
+    }
+
 
 }
