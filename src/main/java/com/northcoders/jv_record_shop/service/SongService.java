@@ -14,4 +14,5 @@ public interface SongService {
     Song updateSong(UpdateSongRequestDTO requestDTO);
     List<Song> addManySongs(List<CreateSongRequestDTO> requestDTOS);
     List<Song> getSongsByTitle(Set<String> titles);
+    boolean deleteSongById(Long id);
 }

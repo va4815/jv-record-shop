@@ -39,4 +39,14 @@ public class SongController {
         Song song = songService.updateSong(requestDTO);
         return new ResponseEntity<>(new SongResponseDTO(song), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSongById(@PathVariable(name = "id") Long id) {
+        boolean result = songService.deleteSongById(id);
+        if (!result) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
 }

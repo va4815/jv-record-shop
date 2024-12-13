@@ -70,4 +70,14 @@ public class SongServiceImpl implements SongService {
     public List<Song> getSongsByTitle(Set<String> titles) {
         return songRepository.findAllByTitleIn(titles);
     }
+
+    @Override
+    public boolean deleteSongById(Long id) {
+        Song song = getSongById(id);
+        if (song != null) {
+            songRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
