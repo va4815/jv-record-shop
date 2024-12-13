@@ -2,6 +2,7 @@ package com.northcoders.jv_record_shop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.northcoders.jv_record_shop.dto.request.CreateArtistsRequestDTO;
+import com.northcoders.jv_record_shop.dto.request.UpdateArtistsRequestDTO;
 import com.northcoders.jv_record_shop.model.Artists;
 import com.northcoders.jv_record_shop.model.Gender;
 import com.northcoders.jv_record_shop.service.impl.ArtistsServiceImpl;
@@ -72,6 +73,29 @@ public class ArtistsControllerTest {
     }
 
     @Test
+    @DisplayName("GET /artists/{id}")
+    void getArtistsById() throws Exception {
+        Long artistId = 1L;
+
+        Artists artists = Artists.builder()
+                .id(artistId)
+                .name("Taylor Swift")
+                .gender(Gender.F)
+                .build();
+
+        when(this.mockArtistsServiceImpl.getArtistById(artistId)).thenReturn(artists);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.get("/api/v1/artists/{id}", artistId)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(artistId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Taylor Swift"))
+        ;
+
+    }
+
+    @Test
     @DisplayName("POST /artists")
     void createArtists() throws Exception {
         Artists artists = Artists.builder()
@@ -96,5 +120,47 @@ public class ArtistsControllerTest {
         ;
 
     }
+
+    @Test
+    @DisplayName("PUT /artists")
+    void updateArtists() throws Exception {
+        Artists artists = Artists.builder()
+                .name("Taylor Swift")
+                .gender(Gender.F)
+                .build();
+
+        when(this.mockArtistsServiceImpl.updateArtist(Mockito.any(UpdateArtistsRequestDTO.class))).thenReturn(artists);
+
+        UpdateArtistsRequestDTO requestDTO = UpdateArtistsRequestDTO.builder()
+                .name("Taylor Swift")
+                .gender(Gender.F)
+                .build();
+
+        String requestBody = mapper.writeValueAsString(requestDTO);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.put("/api/v1/artists").content(requestBody)
+                                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Taylor Swift"))
+        ;
+
+    }
+
+    @Test
+    @DisplayName("DELETE /artists")
+    void deleteArtistsById() throws Exception {
+        boolean result = true;
+
+        when(this.mockArtistsServiceImpl.deleteArtistById(1L)).thenReturn(result);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.delete("/api/v1/artists/{id}", 1L)
+                                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isAccepted())
+        ;
+
+    }
+
 
 }

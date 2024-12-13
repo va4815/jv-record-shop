@@ -1,6 +1,7 @@
 package com.northcoders.jv_record_shop.controller;
 
 import com.northcoders.jv_record_shop.dto.request.CreateArtistsRequestDTO;
+import com.northcoders.jv_record_shop.dto.request.UpdateArtistsRequestDTO;
 import com.northcoders.jv_record_shop.dto.response.ArtistsResponseDTO;
 import com.northcoders.jv_record_shop.model.Artists;
 import com.northcoders.jv_record_shop.service.ArtistsService;
@@ -25,10 +26,34 @@ public class ArtistsController {
         return new ResponseEntity<>(artistsDTOList, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ArtistsResponseDTO> getArtistsById(@PathVariable(name = "id") Long id) {
+        Artists artists = artistsService.getArtistById(id);
+        if (artists == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(new ArtistsResponseDTO(artists), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<ArtistsResponseDTO> createArtists(@RequestBody CreateArtistsRequestDTO requestDTO) {
         Artists artists = artistsService.createArtist(requestDTO);
         return new ResponseEntity<>(new ArtistsResponseDTO(artists), HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    public ResponseEntity<ArtistsResponseDTO> updateArtists(@RequestBody UpdateArtistsRequestDTO requestDTO) {
+        Artists artists = artistsService.updateArtist(requestDTO);
+        return new ResponseEntity<>(new ArtistsResponseDTO(artists), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteArtistById(@PathVariable(name = "id") Long id) {
+        boolean result = artistsService.deleteArtistById(id);
+        if (!result) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
 }
